@@ -16,7 +16,7 @@ class Logger(object):
 
     def scalar_summary(self, tag, value, step):
         """Log a scalar variable."""
-        summary = tf.compat.v1.Summary(value=[tf.compat.v1.Summary.Value(tag=tag, simple_value=value)])
+        summary = tf.Summary(value=[tf.Summary.Value(tag=tag, simple_value=value)])
         self.writer.add_summary(summary, step)
 
     def image_summary(self, tag, images, step):
@@ -32,14 +32,14 @@ class Logger(object):
             scipy.misc.toimage(img).save(s, format="png")
 
             # Create an Image object
-            img_sum = tf.compat.v1.Summary.Image(encoded_image_string=s.getvalue(),
+            img_sum = tf.Summary.Image(encoded_image_string=s.getvalue(),
                                        height=img.shape[0],
                                        width=img.shape[1])
             # Create a Summary value
-            img_summaries.append(tf.compat.v1.Summary.Value(tag='%s/%d' % (tag, i), image=img_sum))
+            img_summaries.append(tf.Summary.Value(tag='%s/%d' % (tag, i), image=img_sum))
 
         # Create and write Summary
-        summary = tf.compat.v1.Summary(value=img_summaries)
+        summary = tf.Summary(value=img_summaries)
         self.writer.add_summary(summary, step)
 
     def histo_summary(self, tag, values, step, bins=1000):
@@ -49,7 +49,7 @@ class Logger(object):
         counts, bin_edges = np.histogram(values, bins=bins)
 
         # Fill the fields of the histogram proto
-        hist = tf.compat.v1.HistogramProto()
+        hist = tf.HistogramProto()
         hist.min = float(np.min(values))
         hist.max = float(np.max(values))
         hist.num = int(np.prod(values.shape))
@@ -66,6 +66,6 @@ class Logger(object):
             hist.bucket.append(c)
 
         # Create and write Summary
-        summary = tf.compat.v1.Summary(value=[tf.compat.v1.Summary.Value(tag=tag, histo=hist)])
+        summary = tf.Summary(value=[tf.Summary.Value(tag=tag, histo=hist)])
         self.writer.add_summary(summary, step)
         self.writer.flush()
