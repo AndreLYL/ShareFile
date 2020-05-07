@@ -16,7 +16,7 @@
 
   "use_bn": true,
   "use_npy": false,
-  "mGPUs": false,
+  "mGPUs": true,
   "frame_range": 10000,
 
   "cls_threshold": 0.05,
