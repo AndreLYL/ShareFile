@@ -3,21 +3,6 @@ import tensorflow as tf
 import numpy as np
 import scipy.misc
 
-"""
-INFO line 15:22: tf.summary.FileWriter requires manual check. The TF 1.x summary API cannot be automatically migrated to TF 2.0, so symbols have been converted to tf.compat.v1.summary.* and must be migrated manually. Typical usage will only require changes to the summary writing logic, not to individual calls like scalar(). For examples of the new summary API, see the Effective TF 2.0 migration document or check the TF 2.0 TensorBoard tutorials.
-INFO line 15:22: Renamed 'tf.summary.FileWriter' to 'tf.compat.v1.summary.FileWriter'
-INFO line 19:18: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-INFO line 19:36: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-WARNING line 32:12: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
-INFO line 35:22: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-INFO line 39:33: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-INFO line 42:18: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-INFO line 52:15: Renamed 'tf.HistogramProto' to 'tf.compat.v1.HistogramProto'
-INFO line 69:18: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-INFO line 69:36: Renamed 'tf.Summary' to 'tf.compat.v1.Summary'
-TensorFlow 2.0 Upgrade Script
-"""
-
 try:
     from StringIO import StringIO  # Python 2.7
 except ImportError:
@@ -27,7 +12,7 @@ except ImportError:
 class Logger(object):
     def __init__(self, log_dir):
         """Create a summary writer logging to log_dir."""
-        self.writer = tf.compat.v1.summary.FileWriter(log_dir)
+        self.writer = tf.summary.create_file_writer(log_dir)
 
     def scalar_summary(self, tag, value, step):
         """Log a scalar variable."""
